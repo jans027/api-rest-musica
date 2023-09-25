@@ -19,16 +19,25 @@ app.use(cors());
 
 // Convertir los datos del body a objetos js
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // cargar configuracion de rutas 
+const UserRoutes = require("./routes/user");
+const ArtistRoutes = require("./routes/artist");
+const SongRoutes = require("./routes/song");
+const AlbumRoutes = require("./routes/album");
+
+app.use("/api/user", UserRoutes);
+app.use("/api/artist", ArtistRoutes);
+app.use("/api/song", SongRoutes);
+app.use("/api/album", AlbumRoutes);
 
 // Ruta de prueba
-app.get("/ruta-de-prueba", (req, res)=>{
+app.get("/ruta-de-prueba", (req, res) => {
     return res.status(200).send("Mensaje de prueba API musica");
 });
 
 // Poner el servidor a escuchar peticiones http
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`Servidor de node escuchando en el puerto ${port}`)
 })
