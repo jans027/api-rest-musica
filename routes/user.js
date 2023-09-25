@@ -5,8 +5,10 @@ const router = express.Router();
 // Importar controlador
 const UserController = require("../controllers/user");
 
-// Definir rutas
-router.get("/prueba-user", UserController.prueba)
+// Definir rutas utiles
+router.get("/prueba-user", UserController.prueba);
+router.get("/register", UserController.register);
+
 
 // exportar router
 module.exports = router;
