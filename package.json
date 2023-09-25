@@ -4,7 +4,8 @@
   "description": "API REST con Node, Mongo, Express, JWT para aplicacion de musica",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "Julian Sanabria",
   "license": "MIT",
