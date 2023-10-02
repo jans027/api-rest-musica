@@ -2,12 +2,13 @@
 const validate = require("../helpers/validate");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("../helpers/jwt");
 
 
 // accion de prueba
 const prueba = (req, res) => {
     return res.status(200).send({
-        status: 'succes',
+        status: 'success',
         mesage: 'Mensaje enviado desde:controller/user.js'
     });
 };
@@ -73,11 +74,15 @@ const register = async (req, res) => {
         } else {
             //Guardar usuario en la bbdd
             user_to_save.save();
+            // li,piar el objeto para no devolver info sencible
+            let userCreated = user_to_save.toObject();
+            delete userCreated.password;
+            delete userCreated.role;
 
             return res.status(200).json({
                 status: "success",
                 messaje: "Usuario guardado correctamente !!",
-                user_to_save
+                user: userCreated
             });
         }
 
@@ -91,8 +96,107 @@ const register = async (req, res) => {
 
 };
 
+// Logearse como usuario
+const login = (req, res) => {
+    // Recoger los parametros de la peticion
+    let params = req.body;
+
+    // Comprobar que me llegan
+    if (!params.email || !params.password) {
+
+        return res.status(400).send({
+            status: 'error',
+            mesage: 'Faltan datos por enviar'
+        });
+    }
+
+    // Buscar en la bd si existe el usuario
+    User.findOne({ email: params.email })
+        .then((user) => {
+
+            if (!user) {
+
+                return res.status(400).send({
+                    status: 'error',
+                    mesage: 'No existe el usuario'
+                });
+            };
+
+            // Comprobar su password
+            const pwd = bcrypt.compareSync(params.password, user.password);
+            if (!pwd) {
+
+                return res.status(400).send({
+                    status: 'error',
+                    mesage: 'Login incorrecto'
+                });
+            };
+
+            // limpiar objeto (quitar info que no se debe visualizar)
+            let identityUser = user.toObject();
+            delete identityUser.password;
+            delete identityUser.email;
+            delete identityUser.role;
+            delete identityUser.__v;
+
+            // Conseguir token jwt (crear un servicio que nos permita crear el token)
+            const token = jwt.createToken(user);
+
+            // Devolver datos de usuario y token
+            return res.status(200).send({
+                status: 'success',
+                mesage: 'Metodo de login',
+                token,
+                user: identityUser
+            });
+
+        }).catch((error) => {
+
+            return res.status(404).send({
+                status: 'error',
+                mesage: 'Ocurrio un error al buscar usuarios'
+            });
+        });
+
+};
+
+const profile = (req, res) => {
+    // Recoger id de usuario url
+    const id = req.params.id;
+
+    // Consulta para sacar los datos del perfil
+    User.findById(id)
+        .then((user) => {
+
+            if (!user) {
+
+                return res.status(404).send({
+                    status: 'error',
+                    mesage: 'El usuario no existe',
+                });
+            };
+            
+            // Devovert resultado
+            return res.status(200).send({
+                status: 'success',
+                mesage: 'Metodo profile',
+                id,
+                user
+            });
+        }).catch((err) => {
+
+            return res.status(400).send({
+                status: 'success',
+                mesage: 'Algo salio mal',
+            });
+        });
+
+}
+
 // exportar accciones
 module.exports = {
     prueba,
-    register
+    register,
+    login,
+    profile
 }
