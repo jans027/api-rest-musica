@@ -176,7 +176,7 @@ const profile = (req, res) => {
                 });
             };
             
-            // Devovert resultado
+            // Devover resultado
             return res.status(200).send({
                 status: 'success',
                 mesage: 'Metodo profile',
