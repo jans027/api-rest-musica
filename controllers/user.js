@@ -175,13 +175,20 @@ const profile = (req, res) => {
                     mesage: 'El usuario no existe',
                 });
             };
+
+            // limpiar objeto (quitar info que no se debe visualizar)
+            let identityUser = user.toObject();
+            delete identityUser.password;
+            delete identityUser.email;
+            delete identityUser.role;
+            delete identityUser.__v;
             
             // Devover resultado
             return res.status(200).send({
                 status: 'success',
                 mesage: 'Metodo profile',
                 id,
-                user
+                user: identityUser
             });
         }).catch((err) => {
 
@@ -191,6 +198,28 @@ const profile = (req, res) => {
             });
         });
 
+};
+
+const upload = (req, res) =>{
+
+    // Configuracion de subida(multer)
+
+    // Recoger fichero de imagen y comprobar si existe
+
+    // Conseguir el nombre del archivo
+
+    // Sacar info de la imagen
+
+    // Comprobar si la extension es valida 
+
+    // Si es correcto, guardar en la bd
+
+    // Devolver respuesta
+    return res.status(200).send({
+        status: 'success',
+        mesage: 'Metodo Upload',
+        file: req.file
+    });
 }
 
 // exportar accciones
@@ -198,5 +227,6 @@ module.exports = {
     prueba,
     register,
     login,
-    profile
+    profile,
+    upload
 }
