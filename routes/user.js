@@ -26,6 +26,8 @@ router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 router.get("/profile/:id", check.auth, UserController.profile);
 router.post("/upload", [check.auth, uploads.single("file0")], UserController.upload);
+router.get("/avatar/:file", UserController.avatar);
+
 
 
 // exportar router
