@@ -1,6 +1,8 @@
 // Importaciones
 const validate = require("../helpers/validate");
+// Importaciones Modelos
 const User = require("../models/user");
+
 const bcrypt = require("bcrypt");
 const jwt = require("../helpers/jwt");
 const fs = require("fs").promises;
