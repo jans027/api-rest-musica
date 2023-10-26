@@ -201,7 +201,7 @@ const profile = (req, res) => {
         });
 
 };
-
+// Mostrar avatar
 const upload = (req, res) => {
 
     // Configuracion de subida(multer)
@@ -259,7 +259,7 @@ const upload = (req, res) => {
             });
         });
 };
-// Mostarr avatar
+// Mostrar avatar
 const avatar = async (req, res) => {
     // Sacar el parametro de la url
     const file = req.params.file;

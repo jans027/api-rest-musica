@@ -5,7 +5,7 @@ const check = require("../middlewares/auth");
 const router = express.Router();
 // Importar controlador
 const UserController = require("../controllers/user");
-
+ 
 // Configurar subida de imagenes
 const multer = require("multer");
 // Definir almacenamiento
@@ -27,6 +27,7 @@ router.post("/login", UserController.login);
 router.get("/profile/:id", check.auth, UserController.profile);
 router.post("/upload", [check.auth, uploads.single("file0")], UserController.upload);
 router.get("/avatar/:file", UserController.avatar);
+
 
 
 
