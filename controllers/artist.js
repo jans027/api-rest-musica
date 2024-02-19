@@ -45,15 +45,36 @@ const save = (req, res) => {
 
 // Accion mostrar un artista
 const one = (req, res) => {
+    // Mostrar un artista
+    const artistId = req.params.id;
 
-    return res.status(200).send({
-        status: 'succes',
-        message: 'Artista guardado con exito',
-    })
+    // Find
+    Artist.findById(artistId)
+        .then((artist) => {
+
+            if (!artist) {
+                return res.status(404).send({
+                    status: 'succes',
+                    message: 'No existe el artista',
+                })
+            };
+
+            return res.status(200).send({
+                status: 'succes',
+                message: 'Artista encontrado',
+                artist
+            })
+
+        }).catch((err) => {
+
+        });
+
+
 }
 
 // exportar accciones
 module.exports = {
     prueba,
-    save
+    save,
+    one
 }
